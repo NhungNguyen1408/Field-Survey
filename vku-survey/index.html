@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>VKU Campus Care</title>
+  <link rel="manifest" href="/manifest.json" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <style>
+    :root {
+      --primary: #ba1a30;
+      --primary-gradient: linear-gradient(135deg, #c8102e 0%, #990017 100%);
+      --dark-header: #1e1e24; /* Màu xám than sang trọng, KHÔNG còn màu xanh cũ */
+      --bg: #f4f4f6;
+      --surface: #ffffff;
+      --border: #e4e4e7;
+      --text: #18181b;
+      --text-sub: #71717a;
+      --danger: #ef4444;
+      --warning: #f59e0b;
+      --success: #10b981;
+      --radius: 18px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
+    body { background-color: var(--bg); color: var(--text); padding: 20px 0 95px; }
+
+    /* THANH NGANG THU NGẮN VỪA KHÍT FORM (MAX 480PX) */
+    .top-header {
+      max-width: 480px;
+      margin: 0 auto 14px;
+      padding: 0 16px;
+    }
+    .header-content {
+      background: var(--dark-header);
+      border-radius: 22px;
+      padding: 12px 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .user-profile { display: flex; align-items: center; gap: 12px; }
+    .avatar-icon {
+      width: 40px; height: 40px;
+      background: var(--primary-gradient);
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px; color: white;
+      box-shadow: 0 4px 10px rgba(186, 26, 48, 0.35);
+    }
+    .greeting h1 { font-size: 15px; font-weight: 800; color: #ffffff; letter-spacing: -0.2px; }
+    .greeting p { font-size: 11px; color: #a1a1aa; }
+
+    .network-capsule {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 4px 10px; border-radius: 20px;
+      font-size: 11px; font-weight: 700;
+    }
+    .network-capsule.online { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.35); }
+    .network-capsule.offline { background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.4); }
+    .pulse-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+
+    /* CONTAINER CHÍNH CĂN GIỮA */
+    .app-shell { max-width: 480px; margin: 0 auto; padding: 0 16px; }
+
+    .quick-status-card {
+      background: var(--surface);
+      border-radius: var(--radius);
+      padding: 12px 16px;
+      display: flex; justify-content: space-between; align-items: center;
+      border: 1px solid var(--border);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+      margin-bottom: 14px;
+    }
+    .status-left { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; color: #3f3f46; }
+    .status-left i { font-size: 16px; color: var(--primary); }
+    .status-counter { font-size: 12px; font-weight: 700; color: var(--text-sub); }
+
+    .form-card {
+      background: var(--surface);
+      border-radius: 22px;
+      padding: 20px 18px;
+      border: 1px solid var(--border);
+      box-shadow: 0 4px 14px rgba(0,0,0,0.05);
+      margin-bottom: 20px;
+    }
+    .card-headline {
+      font-size: 15px; font-weight: 800; color: #18181b;
+      display: flex; align-items: center; gap: 8px;
+      margin-bottom: 16px; padding-bottom: 12px;
+      border-bottom: 1px dashed var(--border);
+    }
+
+    .input-field { margin-bottom: 14px; }
+    .input-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .field-label { display: block; font-size: 12px; font-weight: 700; color: #52525b; margin-bottom: 6px; }
+
+    .control {
+      width: 100%;
+      padding: 11px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      font-size: 13.5px;
+      background: #fafafa;
+      color: var(--text);
+      outline: none;
+    }
+    .control:focus { border-color: var(--primary); background: #fff; }
+
+    .severity-chips { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .chip {
+      padding: 10px 4px; border-radius: 10px; font-size: 12px; font-weight: 700;
+      text-align: center; cursor: pointer; border: 1.5px solid var(--border);
+      background: #fafafa; color: var(--text-sub); user-select: none; transition: 0.15s;
+    }
+    .chip.active-normal { background: #f4f4f5; border-color: #71717a; color: #18181b; }
+    .chip.active-warning { background: #fef3c7; border-color: #f59e0b; color: #b45309; }
+    .chip.active-danger { background: #fee2e2; border-color: #ef4444; color: #b91c1c; }
+
+    .gps-wrap { display: flex; gap: 8px; }
+    .btn-action {
+      background: #f4f4f5; border: 1.5px solid var(--border); border-radius: 12px;
+      padding: 0 16px; font-size: 13px; font-weight: 700; color: #18181b;
+      display: inline-flex; align-items: center; gap: 6px; cursor: pointer; white-space: nowrap;
+    }
+
+    .photo-dropzone {
+      border: 2px dashed #d4d4d8; border-radius: 14px; padding: 16px;
+      text-align: center; background: #fafafa; cursor: pointer;
+    }
+    .photo-preview-wrap {
+      margin-top: 10px; position: relative; display: none;
+      border-radius: 14px; overflow: hidden; border: 1px solid var(--border);
+    }
+    .photo-preview-wrap img { width: 100%; height: 180px; object-fit: cover; display: block; }
+    .btn-delete-img {
+      position: absolute; top: 10px; right: 10px;
+      background: rgba(24, 24, 27, 0.75); color: white; border: none;
+      width: 30px; height: 30px; border-radius: 50%; cursor: pointer;
+    }
+
+    .btn-submit {
+      width: 100%; padding: 14px; background: var(--primary-gradient);
+      color: white; border: none; border-radius: 14px; font-size: 15px;
+      font-weight: 700; cursor: pointer; box-shadow: 0 6px 18px rgba(186, 26, 48, 0.3);
+      display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 8px;
+    }
+
+    .audit-card {
+      background: var(--surface); border-radius: 16px; padding: 14px 16px;
+      border: 1px solid var(--border); margin-bottom: 10px;
+    }
+    .badge { font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 6px; }
+    .badge-danger { background: #fee2e2; color: #b91c1c; }
+    .badge-warning { background: #fef3c7; color: #b45309; }
+    .badge-normal { background: #f4f4f5; color: #18181b; }
+
+    /* MENU DƯỚI ĐÁY CĂN THEO CHIỀU RỘNG FORM */
+    .nav-bar {
+      position: fixed; bottom: 12px; left: 50%; transform: translateX(-50%);
+      width: calc(100% - 32px); max-width: 480px; height: 60px;
+      background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(12px);
+      border: 1px solid var(--border); border-radius: 20px;
+      display: flex; justify-content: space-around; align-items: center;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1); z-index: 99;
+    }
+    .nav-item {
+      display: flex; flex-direction: column; align-items: center;
+      background: none; border: none; font-size: 11px; font-weight: 700;
+      color: var(--text-sub); cursor: pointer; gap: 3px;
+    }
+    .nav-item i { font-size: 18px; }
+    .nav-item.active { color: var(--primary); }
+
+    #toast {
+      position: fixed; top: 18px; left: 50%; transform: translateX(-50%) translateY(-100px);
+      background: #18181b; color: white; padding: 10px 18px; border-radius: 30px;
+      font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 8px;
+      z-index: 1000; transition: 0.3s;
+    }
+    #toast.show { transform: translateX(-50%) translateY(0); }
+  </style>
+</head>
+<body>
+
+  <div id="toast"><i class="bi bi-check-circle-fill" style="color: #34d399;"></i> <span id="toast-text">Thông báo</span></div>
+
+  <!-- HEADER GỌN GÀNG (TONE XÁM ĐEN VKU, KHÔNG TRÀN VIỀN) -->
+  <header class="top-header">
+    <div class="header-content">
+      <div class="user-profile">
+        <img src="/images.jpg" style="height: 38px; object-fit: contain; margin-right: 8px;" alt="VKU Logo" /> alt="VKU Logo" />
+        <div class="greeting">
+          <h1>VKU Campus Care</h1>
+          <p>Phản ánh sự cố cơ sở vật chất</p>
+        </div>
+      </div>
+      <div id="network-pill" class="network-capsule online">
+        <span class="pulse-dot"></span>
+        <span id="network-label">Online</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="app-shell">
+    <div class="quick-status-card">
+      <div class="status-left">
+        <i class="bi bi-cloud-check-fill"></i>
+        <span>Lưu trữ Offline-first</span>
+      </div>
+      <div class="status-counter">
+        <span id="stat-pending" style="color: var(--warning);">0</span> chờ gửi / <span id="stat-synced" style="color: var(--success);">0</span> đã sync
+      </div>
+    </div>
+
+    <!-- TAB 1: FORM BÁO CÁO -->
+    <section id="tab-form">
+      <div class="form-card">
+        <div class="card-headline">
+          <i class="bi bi-send-plus-fill" style="color: var(--primary); font-size: 18px;"></i>
+          <span>Gửi Báo Cáo Sự Cố Mới</span>
+        </div>
+
+        <form id="survey-form" onsubmit="handleFormSubmit(event)">
+          <div class="input-row">
+            <div class="input-field">
+              <label class="field-label">Mã SV / Cán bộ</label>
+              <input type="text" id="auditor-id" class="control" placeholder="VD: 23IT.EB068" required />
+            </div>
+            <div class="input-field">
+              <label class="field-label">Họ và Tên</label>
+              <input type="text" id="auditor-name" class="control" placeholder="Họ tên của bạn" required />
+            </div>
+          </div>
+
+          <div class="input-row">
+            <div class="input-field">
+              <label class="field-label">Khu vực / Tòa nhà</label>
+              <select id="building" class="control">
+                <option value="Giảng đường K">Giảng đường K</option>
+                <option value="Giảng đường V">Giảng đường V</option>
+                <option value="Ký túc xá (KTX)">Ký túc xá VKU</option>
+                <option value="Nhà Hiệu Bộ">Nhà Hiệu Bộ</option>
+                <option value="Thư viện">Thư viện</option>
+                <option value="Sân thể thao">Sân thể thao</option>
+              </select>
+            </div>
+            <div class="input-field">
+              <label class="field-label">Phòng / Vị trí cụ thể</label>
+              <input type="text" id="room" class="control" placeholder="VD: Phòng K.205" required />
+            </div>
+          </div>
+
+          <div class="input-field">
+            <label class="field-label">Thiết bị gặp sự cố</label>
+            <select id="category" class="control">
+              <option value="Bàn ghế/Bảng phòng học">Bàn ghế / Bảng phòng học</option>
+              <option value="Máy chiếu/Màn chiếu">Máy chiếu / Màn chiếu âm trần</option>
+              <option value="Điều hòa/Quạt trần">Điều hòa / Quạt trần</option>
+              <option value="Hệ thống điện & Ánh sáng">Bóng đèn / Ổ cắm điện hỏng</option>
+              <option value="Cửa kính/Khóa phòng">Cửa sổ / Khóa cửa phòng</option>
+              <option value="Cơ sở vật chất khác">Hạng mục khác</option>
+            </select>
+          </div>
+
+          <div class="input-field">
+            <label class="field-label">Mức độ cần khắc phục</label>
+            <div class="severity-chips">
+              <div id="chip-normal" class="chip active-normal" onclick="selectSeverity('normal')">Bình thường</div>
+              <div id="chip-warning" class="chip" onclick="selectSeverity('warning')">Cần sửa sớm</div>
+              <div id="chip-danger" class="chip" onclick="selectSeverity('danger')">Khẩn cấp</div>
+            </div>
+            <input type="hidden" id="severity" value="normal" />
+          </div>
+
+          <div class="input-field">
+            <label class="field-label">Mô tả tình trạng hiện trường</label>
+            <textarea id="notes" class="control" rows="2" placeholder="Ví dụ: Quạt rung lắc mạnh, ổ cắm có khói nhẹ..." required></textarea>
+          </div>
+
+          <div class="input-field">
+            <label class="field-label">Vị trí GPS hiện tại</label>
+            <div class="gps-wrap">
+              <input type="text" id="coords" class="control" placeholder="Chưa định vị" readonly />
+              <button type="button" class="btn-action" onclick="fetchGPS()">
+                <i class="bi bi-geo-alt-fill"></i> Lấy vị trí
+              </button>
+            </div>
+          </div>
+
+          <div class="input-field">
+            <label class="field-label">Ảnh chụp thực tế minh chứng</label>
+            <input type="file" id="hidden-file-input" accept="image/*" style="display: none;" onchange="handleFileSelected(event)" />
+            <div class="photo-dropzone" onclick="document.getElementById('hidden-file-input').click()">
+              <i class="bi bi-camera-fill" style="font-size: 24px; color: var(--text-sub);"></i>
+              <p style="font-size: 12.5px; font-weight: 600; color: #475569; margin-top: 4px;">Chụp ảnh sự cố hoặc chọn file</p>
+            </div>
+            <div id="photo-preview-wrap" class="photo-preview-wrap">
+              <img id="photo-preview" src="" alt="Ảnh khảo sát" />
+              <button type="button" class="btn-delete-img" onclick="deletePhoto()"><i class="bi bi-x-lg"></i></button>
+            </div>
+          </div>
+
+          <button type="submit" class="btn-submit">
+            <i class="bi bi-send-fill"></i> Gửi Phản Ánh
+          </button>
+        </form>
+      </div>
+    </section>
+
+    <!-- TAB 2: DANH SÁCH -->
+    <section id="tab-list" style="display: none;">
+      <div class="form-card">
+        <div class="card-headline" style="justify-content: space-between;">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <i class="bi bi-clock-history" style="color: var(--primary);"></i>
+            <span>Lịch sử phản ánh của bạn</span>
+          </div>
+          <button class="btn-action" style="padding: 6px 12px; font-size: 11px;" onclick="syncAllReports()">
+            <i class="bi bi-arrow-repeat"></i> Đồng bộ ngay
+          </button>
+        </div>
+        <div id="audit-list-box"></div>
+      </div>
+    </section>
+  </main>
+
+  <nav class="nav-bar">
+    <button class="nav-item active" id="nav-btn-form" onclick="switchTab('form')">
+      <i class="bi bi-plus-circle-fill"></i>
+      <span>Báo sự cố</span>
+    </button>
+    <button class="nav-item" id="nav-btn-list" onclick="switchTab('list')">
+      <i class="bi bi-collection-fill"></i>
+      <span>Đã gửi (<span id="nav-count">0</span>)</span>
+    </button>
+  </nav>
+
+  <script>
+    let currentPhotoBase64 = '';
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      const text = document.getElementById('toast-text');
+      text.textContent = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3000);
+    }
+
+    function selectSeverity(val) {
+      document.getElementById('severity').value = val;
+      document.getElementById('chip-normal').className = 'chip';
+      document.getElementById('chip-warning').className = 'chip';
+      document.getElementById('chip-danger').className = 'chip';
+      document.getElementById('chip-' + val).classList.add('active-' + val);
+    }
+
+    function fetchGPS() {
+      const coordsInput = document.getElementById('coords');
+      coordsInput.value = 'Đang dò tọa độ...';
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (pos) => {
+            coordsInput.value = pos.coords.latitude.toFixed(6) + ', ' + pos.coords.longitude.toFixed(6);
+            showToast('Đã lấy tọa độ GPS!');
+          },
+          () => {
+            coordsInput.value = '15.975298, 108.253198 (VKU)';
+            showToast('Dùng tọa độ khuôn viên VKU');
+          }
+        );
+      } else {
+        coordsInput.value = '15.975298, 108.253198 (VKU)';
+      }
+    }
+
+    function handleFileSelected(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        currentPhotoBase64 = evt.target.result;
+        document.getElementById('photo-preview').src = currentPhotoBase64;
+        document.getElementById('photo-preview-wrap').style.display = 'block';
+        showToast('Đã đính kèm ảnh!');
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function deletePhoto() {
+      currentPhotoBase64 = '';
+      document.getElementById('photo-preview-wrap').style.display = 'none';
+      document.getElementById('hidden-file-input').value = '';
+    }
+
+    function getStoredReports() {
+      return JSON.parse(localStorage.getItem('vku_reports') || '[]');
+    }
+
+    function saveReports(arr) {
+      localStorage.setItem('vku_reports', JSON.stringify(arr));
+    }
+
+    function handleFormSubmit(e) {
+      e.preventDefault();
+      const reports = getStoredReports();
+      const newReport = {
+        id: Date.now(),
+        auditorId: document.getElementById('auditor-id').value,
+        auditorName: document.getElementById('auditor-name').value,
+        building: document.getElementById('building').value,
+        room: document.getElementById('room').value,
+        category: document.getElementById('category').value,
+        severity: document.getElementById('severity').value,
+        notes: document.getElementById('notes').value,
+        coords: document.getElementById('coords').value || '15.975298, 108.253198',
+        photo: currentPhotoBase64,
+        status: navigator.onLine ? 'synced' : 'pending'
+      };
+
+      reports.push(newReport);
+      saveReports(reports);
+      showToast('Đã gửi phản ánh thành công!');
+
+      document.getElementById('room').value = '';
+      document.getElementById('notes').value = '';
+      document.getElementById('coords').value = '';
+      deletePhoto();
+
+      renderDashboard();
+    }
+
+    function renderDashboard() {
+      const reports = getStoredReports();
+      const pending = reports.filter(r => r.status === 'pending').length;
+      const synced = reports.filter(r => r.status === 'synced').length;
+
+      document.getElementById('stat-pending').textContent = pending;
+      document.getElementById('stat-synced').textContent = synced;
+      document.getElementById('nav-count').textContent = reports.length;
+
+      const container = document.getElementById('audit-list-box');
+      if (reports.length === 0) {
+        container.innerHTML = '<p style="text-align:center; color:#71717a; font-size:13px; padding:20px;">Bạn chưa gửi phản ánh nào.</p>';
+        return;
+      }
+
+      container.innerHTML = '';
+      [...reports].reverse().forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'audit-card';
+        let badgeClass = 'badge-normal';
+        let badgeText = 'Bình thường';
+        if (item.severity === 'warning') { badgeClass = 'badge-warning'; badgeText = 'Cần sửa sớm'; }
+        if (item.severity === 'danger') { badgeClass = 'badge-danger'; badgeText = 'Khẩn cấp'; }
+
+        const syncHtml = item.status === 'synced'
+          ? '<span style="color:#10b981; font-size:11.5px; font-weight:700;"><i class="bi bi-check2-all"></i> Đã gửi</span>'
+          : '<span style="color:#f59e0b; font-size:11.5px; font-weight:700;"><i class="bi bi-clock-history"></i> Lưu máy</span>';
+
+        div.innerHTML = `
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+            <strong style="font-size:13.5px; color:#18181b;">${item.building} - ${item.room}</strong>
+            <span class="badge ${badgeClass}">${badgeText}</span>
+          </div>
+          <div style="font-size:12.5px; color:#3f3f46; margin-bottom:6px;">
+            <span style="font-weight:700; color:#71717a;">${item.category}:</span> ${item.notes}
+          </div>
+          <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid #f4f4f5; padding-top:6px;">
+            <small style="color:#71717a; font-size:11px;"><i class="bi bi-geo-alt"></i> ${item.coords}</small>
+            ${syncHtml}
+          </div>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    function switchTab(tab) {
+      if (tab === 'form') {
+        document.getElementById('tab-form').style.display = 'block';
+        document.getElementById('tab-list').style.display = 'none';
+        document.getElementById('nav-btn-form').classList.add('active');
+        document.getElementById('nav-btn-list').classList.remove('active');
+      } else {
+        document.getElementById('tab-form').style.display = 'none';
+        document.getElementById('tab-list').style.display = 'block';
+        document.getElementById('nav-btn-form').classList.remove('active');
+        document.getElementById('nav-btn-list').classList.add('active');
+      }
+    }
+
+    function syncAllReports() {
+      const reports = getStoredReports();
+      reports.forEach(r => r.status = 'synced');
+      saveReports(reports);
+      showToast('Đã đồng bộ lên hệ thống!');
+      renderDashboard();
+    }
+
+    window.addEventListener('online', () => {
+      document.getElementById('network-pill').className = 'network-capsule online';
+      document.getElementById('network-label').textContent = 'Online';
+      syncAllReports();
+    });
+    window.addEventListener('offline', () => {
+      document.getElementById('network-pill').className = 'network-capsule offline';
+      document.getElementById('network-label').textContent = 'Offline';
+    });
+
+    renderDashboard();
+  </script>
+</body>
+</html>

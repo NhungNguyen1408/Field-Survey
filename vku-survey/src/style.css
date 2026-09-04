@@ -1,0 +1,433 @@
+:root {
+  /* Bảng màu hệ thống VKU & Dark Modern */
+  --primary: #ba1a30;
+  --primary-gradient: linear-gradient(135deg, #c8102e 0%, #990017 100%);
+  --dark-card: #18181b;
+  --bg: #f4f4f5;
+  --surface: #ffffff;
+  --border: #e4e4e7;
+  --text: #18181b;
+  --text-sub: #71717a;
+  --danger: #ef4444;
+  --warning: #f59e0b;
+  --success: #10b981;
+  --radius: 18px;
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 14px rgba(0, 0, 0, 0.06);
+
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  padding: 18px 0 90px;
+  min-height: 100vh;
+}
+
+/* Thanh Header co ngắn, căn giữa */
+.top-header {
+  max-width: 480px;
+  margin: 0 auto 16px;
+  padding: 0 16px;
+}
+
+.header-content {
+  background: var(--dark-card);
+  border-radius: 24px;
+  padding: 14px 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.user-profile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.avatar-icon {
+  width: 40px;
+  height: 40px;
+  background: var(--primary-gradient);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  color: #ffffff;
+  box-shadow: 0 4px 10px rgba(186, 26, 48, 0.35);
+}
+
+.greeting h1 {
+  font-size: 15px;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -0.2px;
+}
+
+.greeting p {
+  font-size: 11px;
+  color: #a1a1aa;
+}
+
+/* Capsule báo trạng thái mạng */
+.network-capsule {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.network-capsule.online {
+  background: rgba(16, 185, 129, 0.18);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.35);
+}
+
+.network-capsule.offline {
+  background: rgba(239, 68, 68, 0.2);
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.4);
+}
+
+.pulse-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+/* Thân ứng dụng */
+.app-shell {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+/* Card trạng thái Offline Sync */
+.quick-status-card {
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 12px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 14px;
+}
+
+.status-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #3f3f46;
+}
+
+.status-left i {
+  font-size: 16px;
+  color: var(--primary);
+}
+
+.status-counter {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-sub);
+}
+
+/* Khung Form nhập liệu */
+.form-card {
+  background: var(--surface);
+  border-radius: 22px;
+  padding: 20px 18px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-md);
+  margin-bottom: 20px;
+}
+
+.card-headline {
+  font-size: 15px;
+  font-weight: 800;
+  color: #18181b;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px dashed var(--border);
+}
+
+.input-field {
+  margin-bottom: 14px;
+}
+
+.input-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.field-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  color: #52525b;
+  margin-bottom: 6px;
+}
+
+.control {
+  width: 100%;
+  padding: 11px 14px;
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  font-size: 13.5px;
+  background: #fafafa;
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.control:focus {
+  border-color: var(--primary);
+  background: #ffffff;
+}
+
+/* Các thẻ bấm chọn mức độ khẩn cấp */
+.severity-chips {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.chip {
+  padding: 10px 4px;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 700;
+  text-align: center;
+  cursor: pointer;
+  border: 1.5px solid var(--border);
+  background: #fafafa;
+  color: var(--text-sub);
+  user-select: none;
+  transition: all 0.15s ease;
+}
+
+.chip.active-normal {
+  background: #f4f4f5;
+  border-color: #71717a;
+  color: #18181b;
+}
+
+.chip.active-warning {
+  background: #fef3c7;
+  border-color: #f59e0b;
+  color: #b45309;
+}
+
+.chip.active-danger {
+  background: #fee2e2;
+  border-color: #ef4444;
+  color: #b91c1c;
+}
+
+/* Tọa độ GPS */
+.gps-wrap {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-action {
+  background: #f4f4f5;
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  padding: 0 16px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #18181b;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.btn-action:active {
+  transform: scale(0.96);
+}
+
+/* Khu vực tải / Chụp ảnh */
+.photo-dropzone {
+  border: 2px dashed #d4d4d8;
+  border-radius: 14px;
+  padding: 16px;
+  text-align: center;
+  background: #fafafa;
+  cursor: pointer;
+}
+
+.photo-preview-wrap {
+  margin-top: 10px;
+  position: relative;
+  display: none;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+.photo-preview-wrap img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  display: block;
+}
+
+.btn-delete-img {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(24, 24, 27, 0.75);
+  color: #ffffff;
+  border: none;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+/* Nút Submit chính */
+.btn-submit {
+  width: 100%;
+  padding: 14px;
+  background: var(--primary-gradient);
+  color: #ffffff;
+  border: none;
+  border-radius: 14px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(186, 26, 48, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 8px;
+  transition: transform 0.15s;
+}
+
+.btn-submit:active {
+  transform: scale(0.98);
+}
+
+/* Danh sách báo cáo đã lưu */
+.audit-card {
+  background: var(--surface);
+  border-radius: 16px;
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  margin-bottom: 10px;
+}
+
+.badge {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 6px;
+}
+
+.badge-danger {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.badge-warning {
+  background: #fef3c7;
+  color: #b45309;
+}
+
+.badge-normal {
+  background: #e0f2fe;
+  color: #0369a1;
+}
+
+/* Thanh điều hướng dưới đáy */
+.nav-bar {
+  position: fixed;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 32px);
+  max-width: 480px;
+  height: 60px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08);
+  z-index: 99;
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: none;
+  border: none;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-sub);
+  cursor: pointer;
+  gap: 3px;
+}
+
+.nav-item i {
+  font-size: 18px;
+}
+
+.nav-item.active {
+  color: var(--primary);
+}
+
+/* Toast popup */
+#toast {
+  position: fixed;
+  top: 18px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-100px);
+  background: #18181b;
+  color: #ffffff;
+  padding: 10px 18px;
+  border-radius: 30px;
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  z-index: 1000;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+#toast.show {
+  transform: translateX(-50%) translateY(0);
+}
